@@ -1,0 +1,32 @@
+name: Staging-CI
+
+# Trigger deployment only on push to master branch
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  deploy:
+    name: Deploy to EC2 on master branch push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PIPELINE_EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.PIPELINE_HOST_DNS }}
+          REMOTE_USER: ${{ secrets.PIPELINE_USERNAME }}
+          TARGET: ${{ secrets.PIPELINE_TARGET_DIR }}
+
+      - name: PR Status
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "Pull request merged!! PR Name: ${{ github.event.pull_request.title }}"
