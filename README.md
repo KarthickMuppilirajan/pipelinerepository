@@ -1,2 +1,2 @@
 # pipelinerepository
-This is used for pipeline testing closePR
+This is used for pipeline testing closing PR
