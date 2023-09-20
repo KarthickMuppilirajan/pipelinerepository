@@ -1,2 +1,2 @@
 # pipelinerepository
-This is used for testing pipeline
+This is used for pipeline testing
